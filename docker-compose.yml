@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  vexa:
+    image: vexaai/vexa-lite:latest
+    ports:
+      - "${PORT:-8080}:8080"
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - TRANSCRIBER_API_KEY=${TRANSCRIBER_API_KEY}
+      - ADMIN_API_TOKEN=${ADMIN_API_TOKEN}
+      - PORT=8080
+    restart: always
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-vexa_password}
+      - POSTGRES_DB=vexa
+    volumes:
+      - vexa_db_data:/var/lib/postgresql/data
+
+volumes:
+  vexa_db_data:
